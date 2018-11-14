@@ -1,10 +1,15 @@
 # SYProgressWebView
 带有进度条的网页加载视图
 
-#效果图
+# 效果图
 ![progressWebView.gif](./progressWebView.gif)
 
-#使用
+# 使用
+
+* 使用介绍
+  * 自动导入：使用命令pod 'SYProgressWebView' 导入到项目中
+  * 手动导入：或下载源码后，将源码添加到项目中
+
 ~~~ javascript
 
 // 导入头文件
