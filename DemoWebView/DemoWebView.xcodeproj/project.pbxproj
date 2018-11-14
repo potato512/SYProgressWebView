@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A71AD24F1E052D70009E7D1F /* SYProgressWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = A71AD24E1E052D70009E7D1F /* SYProgressWebView.m */; };
 		A71F8A651E0276A90059E613 /* backPreviousImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A71F8A621E0276A90059E613 /* backPreviousImage.png */; };
 		A71F8A661E0276A90059E613 /* backPreviousImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A71F8A631E0276A90059E613 /* backPreviousImage@2x.png */; };
 		A71F8A671E0276A90059E613 /* backPreviousImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A71F8A641E0276A90059E613 /* backPreviousImage@3x.png */; };
+		A73752C1219C00B0000B85A6 /* SYProgressWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = A73752C0219C00B0000B85A6 /* SYProgressWebView.m */; };
 		A7E630161E00E40800D98CE6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E630151E00E40800D98CE6 /* main.m */; };
 		A7E630191E00E40800D98CE6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E630181E00E40800D98CE6 /* AppDelegate.m */; };
 		A7E6301C1E00E40800D98CE6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E6301B1E00E40800D98CE6 /* ViewController.m */; };
@@ -40,11 +40,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A71AD24D1E052D70009E7D1F /* SYProgressWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYProgressWebView.h; sourceTree = "<group>"; };
-		A71AD24E1E052D70009E7D1F /* SYProgressWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYProgressWebView.m; sourceTree = "<group>"; };
 		A71F8A621E0276A90059E613 /* backPreviousImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backPreviousImage.png; sourceTree = "<group>"; };
 		A71F8A631E0276A90059E613 /* backPreviousImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backPreviousImage@2x.png"; sourceTree = "<group>"; };
 		A71F8A641E0276A90059E613 /* backPreviousImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backPreviousImage@3x.png"; sourceTree = "<group>"; };
+		A73752BF219C00B0000B85A6 /* SYProgressWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYProgressWebView.h; sourceTree = "<group>"; };
+		A73752C0219C00B0000B85A6 /* SYProgressWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYProgressWebView.m; sourceTree = "<group>"; };
 		A7E630111E00E40800D98CE6 /* DemoWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E630151E00E40800D98CE6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A7E630171E00E40800D98CE6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -90,15 +90,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A71AD24C1E052D70009E7D1F /* SYProgressWebView */ = {
-			isa = PBXGroup;
-			children = (
-				A71AD24D1E052D70009E7D1F /* SYProgressWebView.h */,
-				A71AD24E1E052D70009E7D1F /* SYProgressWebView.m */,
-			);
-			path = SYProgressWebView;
-			sourceTree = "<group>";
-		};
 		A71F8A611E0276A90059E613 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +98,16 @@
 				A71F8A641E0276A90059E613 /* backPreviousImage@3x.png */,
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		A73752BE219C00B0000B85A6 /* SYProgressWebView */ = {
+			isa = PBXGroup;
+			children = (
+				A73752BF219C00B0000B85A6 /* SYProgressWebView.h */,
+				A73752C0219C00B0000B85A6 /* SYProgressWebView.m */,
+			);
+			name = SYProgressWebView;
+			path = ../../SYProgressWebView;
 			sourceTree = "<group>";
 		};
 		A7E630081E00E40800D98CE6 = {
@@ -136,10 +137,10 @@
 				A7E630181E00E40800D98CE6 /* AppDelegate.m */,
 				A7E6301A1E00E40800D98CE6 /* ViewController.h */,
 				A7E6301B1E00E40800D98CE6 /* ViewController.m */,
+				A73752BE219C00B0000B85A6 /* SYProgressWebView */,
 				A71F8A611E0276A90059E613 /* images */,
 				A7E630471E00E4C900D98CE6 /* SYWebViewController.h */,
 				A7E630481E00E4C900D98CE6 /* SYWebViewController.m */,
-				A71AD24C1E052D70009E7D1F /* SYProgressWebView */,
 				A7E6301D1E00E40800D98CE6 /* Main.storyboard */,
 				A7E630201E00E40800D98CE6 /* Assets.xcassets */,
 				A7E630221E00E40800D98CE6 /* LaunchScreen.storyboard */,
@@ -311,7 +312,7 @@
 				A7E6301C1E00E40800D98CE6 /* ViewController.m in Sources */,
 				A7E630191E00E40800D98CE6 /* AppDelegate.m in Sources */,
 				A7E630491E00E4C900D98CE6 /* SYWebViewController.m in Sources */,
-				A71AD24F1E052D70009E7D1F /* SYProgressWebView.m in Sources */,
+				A73752C1219C00B0000B85A6 /* SYProgressWebView.m in Sources */,
 				A7E630161E00E40800D98CE6 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
