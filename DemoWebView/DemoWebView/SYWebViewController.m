@@ -7,7 +7,7 @@
 //
 
 #import "SYWebViewController.h"
-//#import "ZLCWebView.h"
+// 导入头文件
 #import "SYProgressWebView.h"
 
 @interface SYWebViewController () <SYProgressWebViewDelegate>
@@ -37,11 +37,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (self.webView)
-    {
-        [self.webView timerKill];
-    }
 }
 
 - (void)loadView
@@ -67,76 +62,13 @@
 {
     [self navigationItemButtonUI];
     
-    if ([self.navigationController.viewControllers indexOfObject:self] == 0)
-    {
-        [self webViewUIPresent];
+    if ([self.navigationController.viewControllers indexOfObject:self] == 0) {
+        // present出的视图
+        [self loadUIPresent];
+    } else {
+        // push出的视图
+        [self loadUIPush];
     }
-    else
-    {
-        [self webViewUIPush];
-    }
-}
-
-#pragma mark 网页视图
-
-- (void)webViewUIPush
-{
-    NSString *url = @"https://www.baidu.com";
-//    NSString *url = @"http://www.hao123.com";
-//    NSString *url = @"http://www.toutiao.com";
-//    NSString *url = @"http://192.168.3.100:8089/ecsapp/appInventoryModel/intoTotalInvView?account=jie.zheng&token=1";
-    
-    
-    
-    WeakWebView;
-    // 方法1 实例化
-//    self.webView = [[ZLCWebView alloc] initWithFrame:self.view.bounds];
-    // 方法2 实例化
-    self.webView = [[SYProgressWebView alloc] init];
-    [self.view addSubview:self.webView];
-    self.webView.frame = self.view.bounds;
-    self.webView.url = url;
-    self.webView.isBackRoot = NO;
-    self.webView.showActivityView = YES;
-    self.webView.showActionButton = YES;
-    [self.webView reloadUI];
-    [self.webView loadRequest:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
-        NSLog(@"准备加载。title = %@, url = %@", title, url);
-        weakWebView.title = title;
-    } didStart:^(SYProgressWebView *webView) {
-        NSLog(@"开始加载。");
-    } didFinish:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
-        NSLog(@"成功加载。title = %@, url = %@", title, url);
-        weakWebView.title = title;
-    } didFail:^(SYProgressWebView *webView, NSString *title, NSURL *url, NSError *error) {
-        NSLog(@"失败加载。title = %@, url = %@, error = %@", title, url, error);
-        weakWebView.title = title;
-    }];
-}
-
-- (void)webViewUIPresent
-{
-    NSString *url = @"https://www.baidu.com";
-//    NSString *url = @"http://www.hao123.com";
-//    NSString *url = @"http://www.toutiao.com";
-//    NSString *url = @"http://192.168.3.100:8089/ecsapp/appInventoryModel/intoTotalInvView?account=jie.zheng&token=1";
-    
-
-    // 方法1 实例化
-//    self.webView = [[ZLCWebView alloc] initWithFrame:self.view.bounds];
-    // 方法2 实例化
-    self.webView = [[SYProgressWebView alloc] init];
-    [self.view addSubview:self.webView];
-    self.webView.frame = self.view.bounds;
-    self.webView.url = url;
-    self.webView.isBackRoot = NO;
-    self.webView.showActivityView = YES;
-    self.webView.showActionButton = YES;
-    self.webView.backButton.backgroundColor = [UIColor yellowColor];
-    self.webView.forwardButton.backgroundColor = [UIColor greenColor];
-    self.webView.reloadButton.backgroundColor = [UIColor brownColor];
-    [self.webView reloadUI];
-    self.webView.delegate = self;
 }
 
 #pragma mark 取消按钮
@@ -155,43 +87,97 @@
 
 - (void)backPreviousController
 {
-    if (self.webView)
-    {
-        if (self.webView.isBackRoot)
-        {
-            [self.webView stopLoading];
-            
-            if ([self.navigationController.viewControllers indexOfObject:self] == 0)
-            {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-            else
-            {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }
+    if (self.webView.isBackRoot) {
+        [self.webView stopLoading];
+        
+        if ([self.navigationController.viewControllers indexOfObject:self] == 0) {
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
-        else
-        {
-            if ([self.webView canGoBack])
-            {
-                [self.webView goBack];
-            }
-            else
-            {
-                if ([self.navigationController.viewControllers indexOfObject:self] == 0)
-                {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                {
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                }
+        else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } else {
+        if ([self.webView canGoBack]) {
+            [self.webView goBack];
+        } else {
+            if ([self.navigationController.viewControllers indexOfObject:self] == 0) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                [self.navigationController popToRootViewControllerAnimated:YES];
             }
         }
     }
 }
 
-#pragma mark - SYProgressWebViewDelegate
+#pragma mark - 网页视图
+
+#pragma mark 加载显示
+
+- (void)loadUIPush
+{
+    NSString *url = @"https://www.baidu.com";
+//    NSString *url = @"http://www.hao123.com";
+//    NSString *url = @"http://www.toutiao.com";
+//    NSString *url = @"http://192.168.3.100:8089/ecsapp/appInventoryModel/intoTotalInvView?account=jie.zheng&token=1";
+    
+    
+    
+    __weak SYWebViewController *weakSelf = self;
+    //
+    self.webView.url = url; // 方法1
+//    [self.webView loadRequestWithURLStr:url]; // 方法2
+    [self.webView loadRequest:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
+        NSLog(@"准备加载。title = %@, url = %@", title, url);
+        weakSelf.title = title;
+    } didStart:^(SYProgressWebView *webView) {
+        NSLog(@"开始加载。");
+    } didFinish:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
+        NSLog(@"成功加载。title = %@, url = %@", title, url);
+        weakSelf.title = title;
+    } didFail:^(SYProgressWebView *webView, NSString *title, NSURL *url, NSError *error) {
+        NSLog(@"失败加载。title = %@, url = %@, error = %@", title, url, error);
+        weakSelf.title = title;
+    }];
+}
+
+- (void)loadUIPresent
+{
+    NSString *url = @"https://www.baidu.com";
+//    NSString *url = @"http://www.hao123.com";
+//    NSString *url = @"http://www.toutiao.com";
+//    NSString *url = @"http://192.168.3.100:8089/ecsapp/appInventoryModel/intoTotalInvView?account=jie.zheng&token=1";
+    
+
+    //
+//    self.webView.url = url; // 方法1
+    [self.webView loadRequestWithURLStr:url]; // 方法2
+    self.webView.delegate = self;
+}
+
+#pragma mark getter
+
+- (SYProgressWebView *)webView
+{
+    if (_webView == nil) {
+        // 实例方法1
+        _webView = [[SYProgressWebView alloc] initWithFrame:self.view.bounds];
+        // 实例方法2
+//        _webView = [[SYProgressWebView alloc] init];
+//        _webView.frame = self.view.bounds;
+        // 属性设置
+        _webView.isBackRoot = YES;
+        _webView.showActivityView = YES;
+//        _webView.showActionButton = YES;
+        _webView.backButton.backgroundColor = [UIColor yellowColor];
+        _webView.forwardButton.backgroundColor = [UIColor greenColor];
+        _webView.reloadButton.backgroundColor = [UIColor brownColor];
+        //
+        [self.view addSubview:_webView];
+    }
+    return _webView;
+}
+
+#pragma mark SYProgressWebViewDelegate
 
 - (void)progressWebViewDidStartLoad:(SYProgressWebView *)webview
 {

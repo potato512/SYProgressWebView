@@ -4,28 +4,19 @@
 //
 //  Created by zhangshaoyu on 16/12/15.
 //  Copyright © 2016年 zhangshaoyu. All rights reserved.
-//
+//  github：https://github.com/potato512/SYProgressWebView
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import <WebKit/WebKit.h>
 
-/******************************************************************************/
-
-#pragma mark - 宏定义
-
-#define WeakWebView __weak typeof(self) weakWebView = self
-
-#define WidthMainScreen ([UIScreen mainScreen].bounds.size.width)
-static NSTimeInterval const progressTime = (1.0 / 60.0);
-
-#define isIOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-
-/******************************************************************************/
+#pragma mark - SYProgressWebViewDelegate
 
 @class SYProgressWebView;
+
 @protocol SYProgressWebViewDelegate <NSObject>
+
 @optional
+
 /**
  *  加载成功
  *
@@ -63,7 +54,9 @@ static NSTimeInterval const progressTime = (1.0 / 60.0);
 
 @end
 
-@interface SYProgressWebView : UIView <WKNavigationDelegate, WKUIDelegate, UIWebViewDelegate, UIScrollViewDelegate>
+#pragma mark - SYProgressWebView
+
+@interface SYProgressWebView : UIView 
 
 
 #pragma mark - 属性
@@ -73,10 +66,6 @@ static NSTimeInterval const progressTime = (1.0 / 60.0);
  */
 @property (nonatomic, weak) id <SYProgressWebViewDelegate> delegate;
 
-/**
- *  网页加载进度条（UIProgressView）
- */
-@property (nonatomic, strong, readonly) UIProgressView *progressView;
 /**
  *  进度条颜色（默认红色）
  */
@@ -121,29 +110,6 @@ static NSTimeInterval const progressTime = (1.0 / 60.0);
 @property (nonatomic, strong) NSString *html;
 
 #pragma mark - 方法
-
-#pragma mark 实例化
-
-/**
- *  实例化方法
- *
- *  @param frame 位置大小
- *
- *  @return SYProgressWebView
- */
-- (instancetype)initWithFrame:(CGRect)frame;
-
-/**
- *  刷新视图（特别是需要显示子视图操作按钮时）
- */
-- (void)reloadUI;
-
-#pragma mark 计时器
-
-/**
- *  计时器停止（在使用的视图控制器的视图即将消失时调用）
- */
-- (void)timerKill;
 
 #pragma mark 子网页操作
 
@@ -213,3 +179,99 @@ static NSTimeInterval const progressTime = (1.0 / 60.0);
 - (void)loadRequest:(void (^)(SYProgressWebView *webView, NSString *title, NSURL *url))shouldStart didStart:(void (^)(SYProgressWebView *webView))didStart didFinish:(void (^)(SYProgressWebView *webView, NSString *title, NSURL *url))didFinish didFail:(void (^)(SYProgressWebView *webView, NSString *title, NSURL *url, NSError *error))didFail;
 
 @end
+
+
+/**
+ 使用示例
+ 1、导入头文件
+ #import "SYProgressWebView.h"
+ 
+ 2、实例化
+ // 实例方法1
+ _webView = [[SYProgressWebView alloc] initWithFrame:self.view.bounds];
+ // 实例方法2
+ // _webView = [[SYProgressWebView alloc] init];
+ // _webView.frame = self.view.bounds;
+ //
+ [self.view addSubview:_webView];
+ 
+ 3、属性设置
+ _webView.isBackRoot = YES;
+ _webView.showActivityView = YES;
+ //
+ _webView.showActionButton = YES;
+ _webView.backButton.backgroundColor = [UIColor yellowColor];
+ _webView.forwardButton.backgroundColor = [UIColor greenColor];
+ _webView.reloadButton.backgroundColor = [UIColor brownColor];
+         
+ 4、网页加载
+ NSString *url = @"https://www.baidu.com";
+ // 方法1
+ _webView.url = url;
+ // 方法2
+ [_webView loadRequestWithURLStr:url];
+ 
+ 5、方法回调
+ // 方法1 block回调
+ [_webView loadRequest:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
+     NSLog(@"准备加载。title = %@, url = %@", title, url);
+ } didStart:^(SYProgressWebView *webView) {
+     NSLog(@"开始加载。");
+ } didFinish:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
+     NSLog(@"成功加载。title = %@, url = %@", title, url);
+ } didFail:^(SYProgressWebView *webView, NSString *title, NSURL *url, NSError *error) {
+     NSLog(@"失败加载。title = %@, url = %@, error = %@", title, url, error);
+ }];
+ 
+ // 方法2 代理回调
+ // 添加协议
+ SYProgressWebViewDelegate
+ // 设置代理
+ self.webView.delegate = self;
+ // 实现代理方法
+ - (void)progressWebViewDidStartLoad:(SYProgressWebView *)webview
+ {
+     NSLog(@"开始加载。");
+ }
+
+ - (void)progressWebView:(SYProgressWebView *)webview title:(NSString *)title shouldStartLoadWithURL:(NSURL *)url
+ {
+     NSLog(@"准备加载。title = %@, url = %@", title, url);
+ }
+
+ - (void)progressWebView:(SYProgressWebView *)webview title:(NSString *)title didFinishLoadingURL:(NSURL *)url
+ {
+     NSLog(@"成功加载。title = %@, url = %@", title, url);
+ }
+
+ - (void)progressWebView:(SYProgressWebView *)webview title:(NSString *)title didFailToLoadURL:(NSURL *)url error:(NSError *)error
+ {
+     NSLog(@"失败加载。title = %@, url = %@, error = %@", title, url, error);
+ }
+ 
+ 6、返回网页子级视图操作示例
+ - (void)backPreviousController
+ {
+     if (self.webView.isBackRoot) {
+         [self.webView stopLoading];
+         
+         if ([self.navigationController.viewControllers indexOfObject:self] == 0) {
+             [self dismissViewControllerAnimated:YES completion:nil];
+         }
+         else {
+             [self.navigationController popToRootViewControllerAnimated:YES];
+         }
+     } else {
+         if ([self.webView canGoBack]) {
+             [self.webView goBack];
+         } else {
+             if ([self.navigationController.viewControllers indexOfObject:self] == 0) {
+                 [self dismissViewControllerAnimated:YES completion:nil];
+             } else {
+                 [self.navigationController popToRootViewControllerAnimated:YES];
+             }
+         }
+     }
+ }
+ 
+ */

@@ -17,9 +17,6 @@
 
 ~~~
 
-~~~ javascript
-
-~~~
 
 ~~~ javascript
 
@@ -34,24 +31,39 @@
 self.webView = [[SYProgressWebView alloc] init];
 [self.view addSubview:self.webView];
 self.webView.frame = self.view.bounds;
-self.webView.url = url;
 self.webView.isBackRoot = NO;
 self.webView.showActivityView = YES;
 self.webView.showActionButton = YES;
-[self.webView reloadUI];
-// 注意循环引用
-__weak typeof(self) weakWebView = self;
+~~~
+
+~~~ javascript
+
+// 网页加载
+NSString *url = @"https://www.baidu.com";
+
+// 方法1
+self.webView.url = url;
+
+// 方法2
+[self.webView loadRequestWithURLStr:url];
+
+~~~
+
+~~~ javascript
+
+// block回调 注意循环引用
+__weak UIViewController *weakSelf = self;
 [self.webView loadRequest:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
     NSLog(@"准备加载。title = %@, url = %@", title, url);
-weakWebView.title = title;
+    weakSelf.title = title;
 } didStart:^(SYProgressWebView *webView) {
     NSLog(@"开始加载。");
 } didFinish:^(SYProgressWebView *webView, NSString *title, NSURL *url) {
     NSLog(@"成功加载。title = %@, url = %@", title, url);
-    weakWebView.title = title;
+    weakSelf.title = title;
 } didFail:^(SYProgressWebView *webView, NSString *title, NSURL *url, NSError *error) {
     NSLog(@"失败加载。title = %@, url = %@, error = %@", title, url, error);
-    weakWebView.title = title;
+    weakSelf.title = title;
 }];
 
 
@@ -59,19 +71,12 @@ weakWebView.title = title;
 
 ~~~ javascript
 
-// 实例化及使用（使用代理方法，注意添加代理对象与代理协议）
-self.webView = [[SYProgressWebView alloc] init];
-[self.view addSubview:self.webView];
-self.webView.frame = self.view.bounds;
-self.webView.url = url;
-self.webView.isBackRoot = NO;
-self.webView.showActivityView = YES;
-self.webView.showActionButton = YES;
-self.webView.backButton.backgroundColor = [UIColor yellowColor];
-self.webView.forwardButton.backgroundColor = [UIColor greenColor];
-self.webView.reloadButton.backgroundColor = [UIColor brownColor];
-[self.webView reloadUI];
-// 代理对象 SYProgressWebViewDelegate
+// 代理回调
+
+// 代理协议
+SYProgressWebViewDelegate
+
+// 代理对象 
 self.webView.delegate = self;
 
 ~~~
@@ -102,21 +107,6 @@ self.webView.delegate = self;
 {
     NSLog(@"失败加载。title = %@, url = %@, error = %@", title, url, error);
     self.title = title;
-}
-
-~~~
-
-~~~ javascript
-
-// 注意事项（在视图控制器被释放前，注意timer的处理）
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if (self.webView)
-    {
-        [self.webView timerKill];
-    }
 }
 
 ~~~
@@ -163,6 +153,20 @@ self.webView.delegate = self;
 }
 
 ~~~ 
+
+
+# 修改完善
+* 20200423
+  * 版本号：1.1.0
+  * 修改优化
+    * iOS 8.0及以上系统适配
+    * 保留WKWebView，去掉UIWebView
+    * 动作按钮UI刘海适配（后退、前进、刷新）
+    * 删除冗余代码
+
+
+
+
 
 
 

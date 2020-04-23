@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SYProgressWebView"
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "SYProgressWebView will show progress while loading web."
   s.homepage     = "https://github.com/potato512/SYProgressWebView"
   s.license      = { :type => "MIT", :file => "LICENSE" }
