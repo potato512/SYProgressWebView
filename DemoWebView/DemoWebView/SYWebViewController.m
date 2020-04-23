@@ -164,6 +164,8 @@
         // 实例方法2
 //        _webView = [[SYProgressWebView alloc] init];
 //        _webView.frame = self.view.bounds;
+        _webView.showProgress = NO;
+        _webView.progressColor = UIColor.orangeColor;
         // 属性设置
         _webView.isBackRoot = YES;
         _webView.showActivityView = YES;

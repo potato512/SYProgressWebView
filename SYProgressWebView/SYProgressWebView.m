@@ -79,15 +79,18 @@ static void *ContextProgressValueChange = &ContextProgressValueChange;
     self.backgroundColor = [UIColor clearColor];
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     //
+    self.showProgress = YES;
     self.urlTitle = @"加载中...";
 }
 
 - (void)reloadUI
 {
+    //
     self.wkWebView.frame = self.bounds;
     self.progressView.frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.progressView.frame.size.height);
+    [self bringSubviewToFront:self.progressView];
     self.activityView.center = self.center;
-    
+    //
     [self reloadButtonViewUI];
 }
 
@@ -598,9 +601,13 @@ CGFloat previousOffsetY = 0.0;
 - (void)setProgressColor:(UIColor *)progressColor
 {
     _progressColor = progressColor;
-    if (_progressColor) {
-        self.progressView.tintColor = _progressColor;
-    }
+    self.progressView.tintColor = _progressColor;
+}
+
+- (void)setShowProgress:(BOOL)showProgress
+{
+    _showProgress = showProgress;
+    self.progressView.hidden = !_showProgress;
 }
 
 - (void)setUrl:(NSString *)url

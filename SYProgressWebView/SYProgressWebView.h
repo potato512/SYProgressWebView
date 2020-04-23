@@ -67,6 +67,10 @@
 @property (nonatomic, weak) id <SYProgressWebViewDelegate> delegate;
 
 /**
+ *  是否显示加载进度条（默认YES，显示）
+ */
+@property (nonatomic, assign) BOOL showProgress;
+/**
  *  进度条颜色（默认红色）
  */
 @property (nonatomic, strong) UIColor *progressColor;
@@ -85,7 +89,6 @@
  *  网页操作按钮（默认不显示。后退/刷新/前进）
  */
 @property (nonatomic, assign) BOOL showActionButton;
-
 /**
  *  子网页返回按钮（用于设置属性，默认标题为"后退"）
  */
