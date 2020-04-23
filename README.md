@@ -20,7 +20,7 @@
 
 ~~~ javascript
 
-// 定义成属性（便于控制timer）
+// 定义成属性
 @property (nonatomic, strong)  SYProgressWebView *webView;
 
 ~~~
